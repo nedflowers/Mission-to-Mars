@@ -33,7 +33,7 @@ def scrape():
     # navigate our page back to / where we can see the updated content
     return redirect('/', code=302)
 # run
-# if __name__ == "__main__":
+if __name__ == "__main__":
     app.run()
     
    
