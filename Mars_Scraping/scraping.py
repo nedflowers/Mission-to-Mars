@@ -6,7 +6,7 @@ import datetime as dt
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Set up Splinter
-def scrape_all(browser):
+def scrape_all():
     # Initiate headless driver for deployment
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=True)
