@@ -7,7 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 # Set up Splinter
 def scrape_all():
-    # Initiate headless driver for deployment
+    # Initiate headless driver for deploymentpip 
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=True)
 
@@ -118,17 +118,25 @@ def hemisphere_image_urls(browser):
     # Code to retrieve the image urls and titles for each hemisphere.
     # Parse the html with soup
     html = browser.html
-    html_soup = soup(html, 'html.parser')
+    index_soup = soup(html, 'html.parser')
+
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+     # Parse the html with soup
+    html = browser.html
+    index_soup = soup(html, 'html.parser')
 
     # set range to variable
-    pics_count = len(html_soup.select("div.item"))
+    pics_count = len(index_soup.select("div.item"))
 
-    # for loop over the pics_count link of each sample picture
-    for i in range():
+    # for loop over the link of each sample picture
+    for i in range(pics_count):
         # Create an empty dict to hold the search results
         hemispheres = {}
         # Find link to picture and open it
-        link_image = html_soup.select("div.description a")[i].get('href')
+        link_image = index_soup.select("div.description a")[i].get('href')
         browser.visit(f'https://astrogeology.usgs.gov/{link_image}')
                 
         # Parse the new html page with soup
@@ -140,8 +148,8 @@ def hemisphere_image_urls(browser):
         img_title = sample_image_soup.select_one("h2.title").get_text()
         # Add extracts to the results dict
         hemispheres = {
-            'img_url': img_url,
-            'title': img_title}
+                'img_url': img_url,
+                'title': img_title}
 
         # Append results dict to hemisphere image urls list
         hemisphere_image_urls.append(hemispheres)
@@ -149,8 +157,8 @@ def hemisphere_image_urls(browser):
         # Return to main page
         browser.back()
             
-    # Return the list that holds the dictionary of each image url and title
-    return hemisphere_image_urls
+        # Return the list that holds the dictionary of each image url and title
+        return hemisphere_image_urls
 
 if __name__ == "__main__":
 
