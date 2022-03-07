@@ -26,9 +26,7 @@ def scrape():
     mars = mongo.db.mars
     # hold scraped date, referencing the scrape_all function in the scraping.py
     mars_data = scraping.scrape_all()
-    # inserting data, but not if an identical record already exists, 
-    # use the data we have stored in mars_data and modify with data
-    # create new docu
+    # inserting data, but not if an identical record already exists
     mars.update_one({}, {"$set":mars_data}, upsert=True)
     # navigate our page back to / where we can see the updated content
     return redirect('/', code=302)

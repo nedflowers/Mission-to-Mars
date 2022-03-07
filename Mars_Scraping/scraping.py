@@ -128,39 +128,44 @@ def hemisphere_image_urls(browser):
     html = browser.html
     index_soup = soup(html, 'html.parser')
 
-    # set range to variable
-    pics_count = len(index_soup.select("div.item"))
+    # Add try/except for error handling
+    try:
+        # Find the number of pictures to scan
+        pics_count = (index_soup).select("div.item")
 
-    # for loop over the link of each sample picture
-    for i in range(pics_count):
-        # Create an empty dict to hold the search results
-        hemispheres = {}
-        # Find link to picture and open it
-        link_image = index_soup.select("div.description a")[i].get('href')
-        browser.visit(f'https://astrogeology.usgs.gov/{link_image}')
-                
-        # Parse the new html page with soup
-        html = browser.html
-        sample_image_soup = soup(html, 'html.parser')
-        # Get the full image link
-        img_url = sample_image_soup.select_one("div.downloads ul li a").get('href')
-        # Get the full image title
-        img_title = sample_image_soup.select_one("h2.title").get_text()
-        # Add extracts to the results dict
-        hemispheres = {
+        # for loop over the link of each sample picture
+        for i in range(pics_count):
+            # Create an empty dict to hold the search results
+            hemispheres = {}
+            # Find link to picture and open it
+            link_image = index_soup.select("div.description a")[i].get('href')
+            browser.visit(f'https://astrogeology.usgs.gov{link_image}')
+        
+            # Parse the new html page with soup
+            html = browser.html
+            sample_image_soup = soup(html, 'html.parser')
+            # Get the full image link
+            img_url = sample_image_soup.select_one("div.downloads ul li a").get('href')
+            # Get the full image title
+            img_title = sample_image_soup.select_one("h2.title").get_text()
+            # Add extracts to the results dict
+            hemispheres = {
                 'img_url': img_url,
                 'title': img_title}
-
-        # Append results dict to hemisphere image urls list
-        hemisphere_image_urls.append(hemispheres)
-                
-        # Return to main page
-        browser.back()
+        
+            # Append results dict to hemisphere image urls list
+            hemisphere_image_urls.append(hemispheres)
+        
+            # Return to main page
+            browser.back()
+         
+    except BaseException:
+            return None
             
-        # Return the list that holds the dictionary of each image url and title
-        return hemisphere_image_urls
+            
+    # Return the list that holds the dictionary of each image url and title
+    return hemisphere_image_urls
 
 if __name__ == "__main__":
-
-    # If running as script, print scraped data
-    print(scrape_all())
+ # If running as script, print scraped data
+ print(scrape_all())
