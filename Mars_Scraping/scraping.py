@@ -8,19 +8,20 @@ from webdriver_manager.chrome import ChromeDriverManager
 # Set up Splinter
 def scrape_all():
     # Initiate headless driver for deploymentpip 
-    executable_path = {'executable_path': ChromeDriverManager().install()}
-    browser = Browser('chrome', **executable_path, headless=True)
-
-    news_title, news_paragraph = mars_news(browser)
-        
-    # Run all scraping functions and store results in dictionary
-    data = {
+    browser = Browser("chrome", executable_path="chromedriver", headless=True)
+    
+    news_title, news_paragraph= mars_news(browser)
+    hemisphere_image_urls=hemisphere(browser)
+    # Run all scraping functions and store results in dictionary 
+    data={
         "news_title": news_title,
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres": hemisphere_image_urls,
         "last_modified": dt.datetime.now()
     }
+
     # Stop webdriver and return data
     browser.quit()
     return data
@@ -106,12 +107,10 @@ def mars_facts():
 
 # Hemishphere Images
 
-def hemisphere_image_urls(browser):
-    
-    # Visit the URL 
-    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+def hemisphere(browser):
+    url='https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(url)
-    
+
     # Create a list to hold the images and titles.
     hemisphere_image_urls = []
 

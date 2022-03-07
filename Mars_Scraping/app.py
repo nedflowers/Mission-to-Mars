@@ -22,14 +22,11 @@ def index():
 # def scrape route
 @app.route("/scrape")
 def scrape():
-    # assign a new variable that points to our Mongo database:
-    mars = mongo.db.mars
-    # hold scraped date, referencing the scrape_all function in the scraping.py
-    mars_data = scraping.scrape_all()
-    # inserting data, but not if an identical record already exists
-    mars.update_one({}, {"$set":mars_data}, upsert=True)
-    # navigate our page back to / where we can see the updated content
-    return redirect('/', code=302)
+    mars=mongo.db.mars
+    #holds newly scraped data, referencing scrape_all() function in scraping.py file
+    mars_data=scraping.scrape_all()
+    mars.update({},mars_data,upsert=True)
+    return "Scraping Successful"
 # run
 if __name__ == "__main__":
     app.run(debug=True)
