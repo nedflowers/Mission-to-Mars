@@ -19,7 +19,6 @@
         <p><a class="btn btn-danger btn-xs" href="/scrape" role="button">Scrape New Data</a></p>
       </div>
 
-      <!-- Add section for Mars News -->
       <div class="row" id="mars-news">
         <div class="col-md-12">
           <div class="media">
@@ -32,11 +31,9 @@
         </div>
       </div>
 
-      <!-- Section for Featured Image and Facts table -->
       <div class="row" id="mars-featured-image">
         <div class="col-lg-8 col-md-8 col-sm-12">
           <h2>Featured Mars Image</h2>
-          <!-- if images is False/None/non-existent, then default to error message -->
           <img
             src="{{mars.featured_image | default('static/images/error.png', true) }}"
             class="img-responsive"
@@ -53,7 +50,6 @@
         </div>
       </div>
 
-      <!-- Section for Mars Hemispheres -->
       <div class="row" id="mars-hemispheres">
         <div class="page-header">
           <h2 class="text-center">Mars Hemispheres</h2>

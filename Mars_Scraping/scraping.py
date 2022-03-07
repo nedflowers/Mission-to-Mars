@@ -8,7 +8,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 # Set up Splinter
 def scrape_all():
     # Initiate headless driver for deploymentpip 
-    browser = Browser("chrome", executable_path="chromedriver", headless=True)
+    executable_path = {"executable_path": "C:/Users/PauRodriguez/BootCamp/Mission-to-Mars/Mars_Scraping/chromedriver.exe"}
+    browser = Browser("chrome", **executable_path, headless=False)
     
     news_title, news_paragraph= mars_news(browser)
     hemisphere_image_urls=hemisphere(browser)
