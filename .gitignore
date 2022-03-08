@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 Practice.ipynb
 Mission_to_Mars.ipynb
-Mission_to_Mars_Challenge.ipynb
-
+Mars_Scraping/Mission_to_Mars.ipynb
+Mars_Scraping/Mission_to_Mars_Challenge.ipynb
