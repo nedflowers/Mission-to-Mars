@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 # Set up Splinter
 # @NOTE: Replace the path with your actual path to the chromedriver
  # Initiate headless driver for deploymentpip 
-executable_path = {"executable_path": "chrome.exe"}
+executable_path = {"executable_path": "chromedriver.exe"}
 browser = Browser("chrome", **executable_path, headless=False)
 
 
