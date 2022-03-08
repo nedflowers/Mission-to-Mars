@@ -12,21 +12,22 @@ mongo = PyMongo(app)
 
 # def homepage route
 @app.route("/")
-# def index as hompeage
 def index():
     # PyMongo find the "mars" collection in db
     mars = mongo.db.mars.find_one()
-    # return an HTML template using an index.html file
-    return render_template("index.html", mars=mars)
+        # return an HTML template using an index.html file
+    return render_template('index.html', mars=mars)
 
-# def scrape route
+# def scrape rout
 @app.route("/scrape")
 def scrape():
     mars=mongo.db.mars
     #holds newly scraped data, referencing scrape_all() function in scraping.py file
     mars_data=scraping.scrape_all()
     mars.update_one({}, {"$set":mars_data}, upsert=True)
-    return "Scraping Successful"
+    #mars.insert(mars_data)
+    return "SCRAPED"
+    return redirect("/", code=302)
 
 # run
 if __name__ == "__main__":
