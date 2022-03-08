@@ -21,13 +21,12 @@ def index():
 # def scrape rout
 @app.route("/scrape")
 def scrape():
-    mars=mongo.db.mars
+    mars = mongo.db.mars
     #holds newly scraped data, referencing scrape_all() function in scraping.py file
-    mars_data=scraping.scrape_all()
+    mars_data = scraping.scrape_all()
     mars.update_one({}, {"$set":mars_data}, upsert=True)
     #mars.insert(mars_data)
-    return "SCRAPED"
-    return redirect("/", code=302)
+    return render_template('scrape.html', mars_data=mars)
 
 # run
 if __name__ == "__main__":

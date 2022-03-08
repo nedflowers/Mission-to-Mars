@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 # Set up Splinter
 # @NOTE: Replace the path with your actual path to the chromedriver
  # Initiate headless driver for deploymentpip 
-executable_path = {"executable_path": "C:/Users/PauRodriguez/BootCamp/Mission-to-Mars/Mars_Scraping/chromedriver.exe"}
+executable_path = {"executable_path": "chrome.exe"}
 browser = Browser("chrome", **executable_path, headless=False)
 
 
@@ -21,9 +21,8 @@ def scrape_all():
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
         "last_modified": dt.datetime.now(),
-        "hemispheres": hemisphere(browser)
+        "hemispheres_img": hemisphere(browser)
     }
-
 
     # Stop webdriver and return data
     browser.quit()
@@ -110,33 +109,49 @@ def mars_facts():
 
 def hemisphere(browser):
     
-    url='https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-    browser.visit(url)
-
+# 2. Create a list to hold the images and titles.
     hemisphere_image_urls = []
 
-    imgs_links= browser.find_by_css("a.product-item h3")
+# 3. Write code to retrieve the image urls and titles for each hemisphere.
+# Parse the html with soup
+    html = browser.html
+    index_soup = soup(html, 'html.parser')
 
-    for x in range(len(imgs_links)):
-        hemisphere={}
+    try:
+    # set range to variable
+        pics_count = len(index_soup.select("div.item"))
 
-        # Find elements going to click link 
-        browser.find_by_css("a.product-item img")[x].click()
+# for loop over the link of each sample picture
+        for i in range(pics_count):
+            
+            results = {}
+            # Find link to picture and open it
+            link_image = index_soup.select("div.description a")[i].get('href')
+            browser.visit(f'https://astrogeology.usgs.gov/{link_image}')
 
-        # Find sample Image link
-        sample_img= browser.find_by_text("Sample").first
-        hemisphere['img_url']=sample_img['href']
+            # Parse the new html page with soup
+            html = browser.html
+            sample_image_soup = soup(html, 'html.parser')
+            # Get the full image link
+            img_url = sample_image_soup.select_one("div.downloads ul li a").get('href')
+            # Get the full image title
+            img_title = sample_image_soup.select_one("h2.title").get_text()
+            # Add extracts to the results dict
+            results = {
+            'img_url': img_url,
+            'title': img_title}
 
-        # Get hemisphere Title
-        hemisphere['title']=browser.find_by_css("h2.title").text
 
-        #Add Objects to hemisphere_img_urls list
-        hemisphere_image_urls.append(hemisphere)
+        hemisphere_image_urls.append(results)
 
-        # Go Back
+            # Return to main page
         browser.back()
-        
-    return hemisphere_image_urls
+
+    except BaseException:
+        return None
+    
+    # Return the list that holds the dictionary of each image url and title
+    return hemisphere_image_urls   
     
 if __name__ == "__main__":
     # If running as script, print scraped data
